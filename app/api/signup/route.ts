@@ -1,41 +1,46 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import dbConnect from '@/lib/mongodb';
-import User from '@/models/User';
+import jwt from 'jsonwebtoken';
+import { dbConnect } from '@/lib/mongodb';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';  // Ensure this is secure
 
 export async function POST(req: Request) {
   try {
-    console.log('Connecting to database...');
-    await dbConnect();
-    console.log('Connected to database');
+    const db = await dbConnect();
+    const { email, password, name } = await req.json();
 
-    const { name, email, password } = await req.json();
-    console.log('Received signup request:', { name, email });
-
-    if (!name || !email || !password) {
-      console.log('Missing required fields');
-      return NextResponse.json({ error: 'Name, email, and password are required' }, { status: 400 });
+    // Validate input
+    if (!email || !password || !name) {
+      return NextResponse.json({ error: 'Email, password, and name are required' }, { status: 400 });
     }
 
-    const existingUser = await User.findOne({ email });
+    const usersCollection = db.collection('users');
+
+    // Check if user already exists
+    const existingUser = await usersCollection.findOne({ email });
     if (existingUser) {
-      console.log('User already exists:', email);
       return NextResponse.json({ error: 'User already exists' }, { status: 400 });
     }
 
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = new User({
-      name,
+    // Create new user
+    const newUser = {
       email,
       password: hashedPassword,
-    });
+      name,
+      createdAt: new Date(),
+    };
 
-    await newUser.save();
-    console.log('User created successfully:', email);
+    const result = await usersCollection.insertOne(newUser);
 
-    return NextResponse.json({ message: 'User created successfully' }, { status: 201 });
+    // Create and sign JWT
+    const token = jwt.sign({ userId: result.insertedId }, JWT_SECRET, { expiresIn: '1h' });
+
+    return NextResponse.json({ token }, { status: 201 });
   } catch (error) {
     console.error('Signup error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

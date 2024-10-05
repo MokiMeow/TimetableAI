@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import dbConnect from '@/lib/mongodb';
+import { dbConnect } from '@/lib/mongodb';
 import User from '@/models/User';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';  // Ensure this is secure
 
 export async function POST(req: Request) {
   try {
-    await dbConnect();
+    const db = await dbConnect();
     const { email, password } = await req.json();
 
     // Validate input
@@ -17,7 +17,8 @@ export async function POST(req: Request) {
     }
 
     // Find user by email
-    const user = await User.findOne({ email });
+    const usersCollection = db.collection('users');
+    const user = await usersCollection.findOne({ email });
     if (!user) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 400 });
     }
