@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, Trash2, Download, GraduationCap, Clock, Calendar, Coffee, Utensils, Users, BookOpen, School } from 'lucide-react'
+import { Plus, Trash2, Download, GraduationCap, Clock, Calendar, Coffee, Utensils, Users, BookOpen, School, LogOut } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -11,6 +11,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
 import { TimePicker } from "@/components/ui/time-picker"
+import { signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 const popularDepartments = ['Computer Science', 'Electrical Engineering', 'Mechanical Engineering', 'Business Administration', 'Psychology']
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
@@ -52,6 +54,7 @@ interface GeneratedTimetables {
 }
 
 const GeneratePage: React.FC = () => {
+  const router = useRouter()
   const [instituteName, setInstituteName] = useState('BMS Institute of Technology & Management')
   const [department, setDepartment] = useState('Department of Computer Science and Engineering')
   const [semester, setSemester] = useState('V')
@@ -222,6 +225,11 @@ const GeneratePage: React.FC = () => {
     }
   }
 
+  const handleLogout = async () => {
+    await signOut({ redirect: false })
+    router.push('/')
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
@@ -232,10 +240,13 @@ const GeneratePage: React.FC = () => {
               <School className="h-8 w-8 sm:h-10 sm:w-10 text-blue-500" />
               <h1 className="ml-2 sm:ml-3 text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">TimetableGen</h1>
             </div>
-            <nav className="flex space-x-4">
-              <a href="#" className="text-sm sm:text-base text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Home</a>
+            <nav className="flex space-x-4 items-center">
               <a href="#" className="text-sm sm:text-base text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">About</a>
               <a href="#" className="text-sm sm:text-base text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Contact</a>
+              <Button onClick={handleLogout} variant="outline" size="sm" className="flex items-center">
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
             </nav>
           </div>
         </div>
