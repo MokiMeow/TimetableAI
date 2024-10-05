@@ -322,11 +322,11 @@ const GeneratePage: React.FC = () => {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="subjects">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="subjects">Subjects</TabsTrigger>
-                <TabsTrigger value="sections">Sections</TabsTrigger>
-                <TabsTrigger value="breaks">Breaks</TabsTrigger>
-              </TabsList>
+            <TabsList>
+          <TabsTrigger value="subjects">Subjects</TabsTrigger>
+          <TabsTrigger value="sections">Sections</TabsTrigger>
+          <TabsTrigger value="breaks">Breaks</TabsTrigger>
+        </TabsList>
               <TabsContent value="subjects">
                 <div className="space-y-4">
                   {subjects.map((subject, index) => (
