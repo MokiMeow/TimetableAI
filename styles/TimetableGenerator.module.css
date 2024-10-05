@@ -1,0 +1,146 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+.inputSection {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 0.5rem;
+}
+
+.list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.listItem {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.listItem:last-child {
+  border-bottom: none;
+}
+
+.generateButton {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 4px;
+  display: block;
+  margin: 2rem auto;
+}
+
+.generateButton:hover {
+  background-color: #2980b9;
+}
+
+.generateButton:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.timetableSection {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.timetableWrapper {
+  overflow-x: auto;
+}
+
+.timetable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.timetable th,
+.timetable td {
+  border: 1px solid #bdc3c7;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.timetable th {
+  background-color: #3498db;
+  color: white;
+  font-weight: bold;
+}
+
+.institutionHeader {
+  background-color: #2c3e50;
+  color: white;
+  font-size: 1.2rem;
+  padding: 1rem;
+}
+
+.lecture {
+  background-color: #d5f5e3;
+}
+
+.lab {
+  background-color: #fdebd0;
+}
+
+.special {
+  background-color: #ebdef0;
+}
+
+.break {
+  background-color: #f2f3f4;
+}
+
+.subjectTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+}
+
+.subjectTable th,
+.subjectTable td {
+  border: 1px solid #bdc3c7;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.subjectTable th {
+  background-color: #3498db;
+  color: white;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .timetable,
+  .subjectTable {
+    font-size: 0.7rem;
+  }
+
+  .timetable th,
+  .timetable td,
+  .subjectTable th,
+  .subjectTable td {
+    padding: 0.3rem;
+  }
+}
